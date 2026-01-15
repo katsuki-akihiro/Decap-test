@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPosts, getPageBySlug } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = slug ? await getPageBySlug("posts", slug) : null;
+
+if (!post) {
+  throw new Error("Post not found");
+}
+---
+<BaseLayout title={post.title} description={post.description}>
+  <article class="content">
+    <h1>{post.title}</h1>
+    {post.description && <p class="meta">{post.description}</p>}
+    {post.source_url && (
+      <p class="meta">
+        移行元: <a href={post.source_url}>{post.source_url}</a>
+      </p>
+    )}
+    <Fragment set:html={post.body} />
+  </article>
+</BaseLayout>
