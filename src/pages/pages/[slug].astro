@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPages, getPageBySlug } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const pages = await getPages();
+  return pages.map((page) => ({ params: { slug: page.slug } }));
+}
+
+const { slug } = Astro.params;
+const page = slug ? await getPageBySlug("pages", slug) : null;
+
+if (!page) {
+  throw new Error("Page not found");
+}
+---
+<BaseLayout title={page.title} description={page.description}>
+  <article class="content">
+    <h1>{page.title}</h1>
+    {page.description && <p class="meta">{page.description}</p>}
+    {page.source_url && (
+      <p class="meta">
+        移行元: <a href={page.source_url}>{page.source_url}</a>
+      </p>
+    )}
+    <Fragment set:html={page.body} />
+  </article>
+</BaseLayout>

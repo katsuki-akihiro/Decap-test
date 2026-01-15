@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPages, getPosts } from "../lib/content";
+
+const pages = await getPages();
+const posts = await getPosts();
+---
+<BaseLayout title="Decap CMS PoC">
+  <section>
+    <h2>固定ページ</h2>
+    {pages.length === 0 ? (
+      <p>まだ固定ページがありません。移行スクリプトを実行してください。</p>
+    ) : (
+      <div class="card-list">
+        {pages.map((page) => (
+          <article class="card">
+            <h3>
+              <a href={`/Decap-test/pages/${page.slug}/`}>{page.title}</a>
+            </h3>
+            {page.description && <p>{page.description}</p>}
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section style={{ marginTop: "32px" }}>
+    <h2>記事 / コラム</h2>
+    {posts.length === 0 ? (
+      <p>まだ記事がありません。</p>
+    ) : (
+      <div class="card-list">
+        {posts.map((post) => (
+          <article class="card">
+            <h3>
+              <a href={`/Decap-test/posts/${post.slug}/`}>{post.title}</a>
+            </h3>
+            {post.description && <p>{post.description}</p>}
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

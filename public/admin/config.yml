@@ -1,0 +1,37 @@
+backend:
+  name: github
+  repo: katsuki-akihiro/Decap-test
+  branch: main
+  base_url: https://api.github.com
+  auth_endpoint: auth
+
+publish_mode: editorial_workflow
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "pages"
+    label: "固定ページ"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Source URL", name: "source_url", widget: "string", required: false }
+      - { label: "Updated At", name: "updatedAt", widget: "datetime", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "posts"
+    label: "記事・コラム"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Source URL", name: "source_url", widget: "string", required: false }
+      - { label: "Updated At", name: "updatedAt", widget: "datetime", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
